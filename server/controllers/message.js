@@ -9,15 +9,15 @@ const message = async (req, res) => {
     const messages = new Messsage({
         conversationId,
         message,
-        senderId:req.user
+        senderId:req.user.id
 
     })
-    const savedmessage = messages.save()
+    const savedMessage = await messages.save()
     res.json({
         status: 200,
         message: 'message created successful',
         successfull:true,
-        data:savedmessage
+        data:savedMessage
       })
 }
     

@@ -7,6 +7,7 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 
  const routeruser = require('./routes/user');
  const routerconvo = require('./routes/conversation');
+ const routermessage = require('./routes/message');
 
 // middleware
 
@@ -15,7 +16,8 @@ app.use(express.json());
 // routes
 
 app.use('/', routeruser);
-app.use('/', routerconvo);
+app.use('/conversation', routerconvo);
+app.use('/', routermessage);
 
 
 app.use(notFound);

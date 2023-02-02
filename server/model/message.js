@@ -1,20 +1,20 @@
 const mongoose = require("mongoose")
 
 
-const messageschema = new mongoose.schema({
+const messageschema = new mongoose.Schema({
     senderId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
         },
     message:{
-        type:Spring,
+        type:String,
         required:true,
     },
     conversationId:{
-        type:Spring,
+        type:String,
         required:true,
     }
-}, {timestamps}
+}, {timestamps:true}
 )
 
 module.exports  = mongoose.model("Message", messageschema)

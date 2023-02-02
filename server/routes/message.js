@@ -8,4 +8,7 @@ const {message, getAlllMessage } = require('../controllers/message')
 
 router.post('/message',Verify, message )
 
-router.get('/gatMessages', Verify, getAlllMessage)
+router.get('/gatMessages/:convoId', Verify, getAlllMessage)
+
+
+module.exports = router

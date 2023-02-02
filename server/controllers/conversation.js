@@ -2,12 +2,12 @@ const express = require('express')
 const app = express()
 const User = require('../model/user')
 const Conversation = require('../model/conversation')
+const Verify = require('../middleware/verifytoken')
 
 //checking if the convo already exist
 const conversation = async(req, res) =>{
     const {receiverId} = req.body
     const currentUserid = req.user.id
-
     const convoalreadyexist = await Conversation.findOne({members:{$all:[receiverId, currentUserid]} })
         if (convoalreadyexist) {
             return res.status(401).json({msg:'conversation already exist'})
@@ -31,8 +31,7 @@ const conversation = async(req, res) =>{
 }
 //get user conversation with id
 const getAllconversation = async (req, res) => {
-    const id = req.params.id
-    if (req.user.id === req.params.id) {
+    if (req.user.id === req.params.userId) {
         try {
         const currentUserId = req.user.id
         const conversation = await Conversation.find({members: {$in: [currentUserId]}})
@@ -57,11 +56,10 @@ const getAllconversation = async (req, res) => {
 }
 
  //get single conversation
-const getsingleconversation = async (req, res) => {
-  //  const currentUserId = req.user.id
+const getsingleconversation = async(req, res) => {
+    const currentUserid = req.user.id
     const conversation =await Conversation.findById(req.params.convoId)
-    console.log(conversation);
-    if (conversation.members.includes(req.user)) {
+    if (conversation.members.includes(currentUserid)) {
         res.json({
             status: 200,
             message: 'available conversations',
