@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 
 const conversationschema = new mongoose.Schema({
-    member:{
+    members:{
         type:Array,
         required:true,
     },

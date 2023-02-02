@@ -1,20 +1,21 @@
-
+const express = require('express')
+const app = express()
 const User = require('../model/user')
 const Conversation = require('../model/conversation')
 
 //checking if the convo already exist
 const conversation = async(req, res) =>{
-    const reciverId = req.body
-    const currentUserid = req.user
+    const {receiverId} = req.body
+    const currentUserid = req.user.id
 
-    const convoalreadyexist = await Conversation.findOne({members:{$all:[reciverId, currentUserid]} })
+    const convoalreadyexist = await Conversation.findOne({members:{$all:[receiverId, currentUserid]} })
         if (convoalreadyexist) {
             return res.status(401).json({msg:'conversation already exist'})
         } 
     
     const conversation = new Conversation({
-        member: [
-        reciverId,
+        members: [
+        receiverId,
         currentUserid
         ]
     })
@@ -30,13 +31,14 @@ const conversation = async(req, res) =>{
 }
 //get user conversation with id
 const getAllconversation = async (req, res) => {
-    if (req.user.id === req.params.userId) {
+    const id = req.params.id
+    if (req.user.id === req.params.id) {
         try {
         const currentUserId = req.user.id
-        const conversation = await Conversation.find({member: {$in: [currentUserId]}})
+        const conversation = await Conversation.find({members: {$in: [currentUserId]}})
         return res.json({
             status: 200,
-            message: 'available conversation ',
+            message: 'available conversation',
             successfull:true,
             data:conversation
           })
@@ -54,10 +56,12 @@ const getAllconversation = async (req, res) => {
     }
 }
 
-//get single conversation
+ //get single conversation
 const getsingleconversation = async (req, res) => {
-    const conversation =await Convervation.findById(req.params.convoId)
-    if (conversation.members.includes(req.user.id)) {
+  //  const currentUserId = req.user.id
+    const conversation =await Conversation.findById(req.params.convoId)
+    console.log(conversation);
+    if (conversation.members.includes(req.user)) {
         res.json({
             status: 200,
             message: 'available conversations',

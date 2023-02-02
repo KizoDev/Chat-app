@@ -6,7 +6,7 @@ const Verify = require('../middleware/verifytoken')
 const {conversation, getAllconversation, getsingleconversation} = require('../controllers/conversation')
 
 router.post('/conversation',Verify, conversation )
-router.get('/find/:userId',Verify, getAllconversation )
-router.get('/:convoId',Verify, getsingleconversation )
+router.get('/conversation/find/:id',Verify, getAllconversation )
+router.get('/conversation/:convoId',Verify, getsingleconversation )
 
 module.exports = router
